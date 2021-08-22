@@ -50,14 +50,26 @@ public class NotProbingScript : MonoBehaviour
         CalculateAnswer();
         DoLogging();
     }
+    void DisableClips()
+    {
+        screen.text = "";
+        for (int ix = 0; ix < 6; ix++)
+        {
+            blueClips[ix].SetActive(false);
+            redClips[ix].SetActive(false);
+        }
+        if (submitDelay != null)
+            StopCoroutine(submitDelay);
+    }
 
     void Connect(int pos)
     {
         if (clipPlacements.Contains(pos))
-            return;
-        if (submitDelay != null)
-            StopCoroutine(submitDelay);
-        if (clipPlacements[0] == -1)
+        {
+            DisableClips();
+            clipPlacements = new int[]{ -1, -1};
+        }
+        else if (clipPlacements[0] == -1)
         {
             clipPlacements[0] = pos;
             blueClips[pos].SetActive(true);
@@ -69,9 +81,7 @@ public class NotProbingScript : MonoBehaviour
         }
         else
         {
-            screen.text = string.Empty;
-            blueClips[clipPlacements[0]].SetActive(false);
-            redClips[clipPlacements[1]].SetActive(false);
+            DisableClips();
             blueClips[pos].SetActive(true);
             clipPlacements = new int[] { pos, -1 };
         }
@@ -166,21 +176,30 @@ public class NotProbingScript : MonoBehaviour
     {
         command = command.Trim().ToUpperInvariant();
         List<string> parameters = command.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-        if (Regex.IsMatch(command, @"^CONNECT\s+([1-6]\s+)+$"))
+        if (Regex.IsMatch(command, @"^CONNECT(\s+[1-6])+$"))
         {
+            yield return null;
             foreach (string wire in parameters.Skip(1))
             {
+                if (!clipPlacements.Any(x => x == -1))
+                    wireSelectables[clipPlacements.PickRandom()].OnInteract();
                 wireSelectables[wire[0] - '1'].OnInteract();
                 yield return new WaitForSeconds(0.25f);
             }
         }
-        if (Regex.IsMatch(command, @"^CYCLE\s+([1-6]\s+)+$"))
+        if (Regex.IsMatch(command, @"^CYCLE(\s+[1-6])+$"))
         {
+            yield return null;
             parameters.RemoveAt(0);
             for (int i = 0; i < parameters.Count; i++)
             {
                 wireSelectables[parameters[i][0] - '1'].OnInteract();
-                yield return new WaitForSeconds(i % 2 == 1 ? 0.1f : 0.75f);
+                if (i % 2 == 1)
+                {
+                    yield return new WaitForSeconds(1);
+                    wireSelectables[clipPlacements.PickRandom()].OnInteract();
+                }
+                else yield return new WaitForSeconds(0.1f);
             }
         }
 

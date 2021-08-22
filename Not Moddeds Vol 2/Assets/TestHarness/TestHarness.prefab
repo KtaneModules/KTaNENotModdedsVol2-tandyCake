@@ -359,7 +359,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1062282119158648
 GameObject:
   m_ObjectHideFlags: 1
@@ -742,7 +742,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1136800072627918
 GameObject:
   m_ObjectHideFlags: 1
@@ -884,7 +884,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1167111277138000
 GameObject:
   m_ObjectHideFlags: 1
@@ -1155,7 +1155,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1232823179714264
 GameObject:
   m_ObjectHideFlags: 1
@@ -1207,7 +1207,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1252586530767534
 GameObject:
   m_ObjectHideFlags: 1
@@ -1440,7 +1440,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1296169215479216
 GameObject:
   m_ObjectHideFlags: 1
@@ -2179,7 +2179,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1422090831229824
 GameObject:
   m_ObjectHideFlags: 1
@@ -2926,7 +2926,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1577680058040946
 GameObject:
   m_ObjectHideFlags: 1
@@ -3178,7 +3178,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1631051002275900
 GameObject:
   m_ObjectHideFlags: 1
@@ -3618,7 +3618,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1706953717553964
 GameObject:
   m_ObjectHideFlags: 1
@@ -3651,7 +3651,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1712676961877508
 GameObject:
   m_ObjectHideFlags: 1
@@ -3737,7 +3737,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1722834241986180
 GameObject:
   m_ObjectHideFlags: 1
@@ -3822,7 +3822,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1738063253913678
 GameObject:
   m_ObjectHideFlags: 1
@@ -4110,7 +4110,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1795162716733158
 GameObject:
   m_ObjectHideFlags: 1
@@ -4627,7 +4627,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1907150005210134
 GameObject:
   m_ObjectHideFlags: 1
@@ -4842,7 +4842,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1949359243974740
 GameObject:
   m_ObjectHideFlags: 1
@@ -4963,7 +4963,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &1962846687658392
 GameObject:
   m_ObjectHideFlags: 1
@@ -5161,7 +5161,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4004892855457146
 Transform:
   m_ObjectHideFlags: 1
@@ -9606,7 +9606,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: ea7383a11cc28a24cbea15073b68bf56, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10184,7 +10184,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: ea7383a11cc28a24cbea15073b68bf56, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12292,7 +12292,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: ea7383a11cc28a24cbea15073b68bf56, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -14298,7 +14298,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: ea7383a11cc28a24cbea15073b68bf56, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -15080,7 +15080,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: ea7383a11cc28a24cbea15073b68bf56, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -17493,7 +17493,7 @@ TextMesh:
   m_FontSize: 200
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: 1ebe1d96973a920409b439b3a0e2bb63, type: 3}
+  m_Font: {fileID: 12800000, guid: 9519a609a3002ec449cb44e41b7727bf, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
@@ -17577,7 +17577,7 @@ TextMesh:
   m_FontSize: 200
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: 1ebe1d96973a920409b439b3a0e2bb63, type: 3}
+  m_Font: {fileID: 12800000, guid: 9519a609a3002ec449cb44e41b7727bf, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
@@ -17787,7 +17787,7 @@ TextMesh:
   m_FontSize: 200
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: 1ebe1d96973a920409b439b3a0e2bb63, type: 3}
+  m_Font: {fileID: 12800000, guid: 9519a609a3002ec449cb44e41b7727bf, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
@@ -17871,7 +17871,7 @@ TextMesh:
   m_FontSize: 200
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: 1ebe1d96973a920409b439b3a0e2bb63, type: 3}
+  m_Font: {fileID: 12800000, guid: 9519a609a3002ec449cb44e41b7727bf, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
@@ -17997,7 +17997,7 @@ TextMesh:
   m_FontSize: 200
   m_FontStyle: 0
   m_RichText: 1
-  m_Font: {fileID: 12800000, guid: 1ebe1d96973a920409b439b3a0e2bb63, type: 3}
+  m_Font: {fileID: 12800000, guid: 9519a609a3002ec449cb44e41b7727bf, type: 3}
   m_Color:
     serializedVersion: 2
     rgba: 4278190080
@@ -20159,9 +20159,29 @@ MonoBehaviour:
   HighlightPrefab: {fileID: 100000, guid: d78a484c6e87f1b47b6596ac080fe942, type: 2}
   AudioVolume: 0.25
   AudioClips:
-  - {fileID: 8300000, guid: 734c51b59f8d6ee498180894ee43ed81, type: 3}
-  - {fileID: 8300000, guid: d448e22ef0bae2a4eb13060f4680d65b, type: 3}
+  - {fileID: 8300000, guid: e2ebfd26937edb94ca3974e7f4840dba, type: 3}
+  - {fileID: 8300000, guid: b7c0750f652fd994a8ee48707ae8232d, type: 3}
   - {fileID: 8300000, guid: 413433905459d6f4ba2f8a451d8b9d7d, type: 3}
+  - {fileID: 8300000, guid: cdba149a8d1a3874db6aabdd778ffd7c, type: 3}
+  - {fileID: 8300000, guid: 9a075d57a372fa94f8bab93df95d8523, type: 3}
+  - {fileID: 8300000, guid: 0e6f337e0bf604f42bcc1b2c0a324831, type: 3}
+  - {fileID: 8300000, guid: 14f0604eb87c90b4eb469043f58b50fb, type: 3}
+  - {fileID: 8300000, guid: 09fb62ecdb64ec449a2ed8e717f953d1, type: 3}
+  - {fileID: 8300000, guid: 42824c55d26b96440bc66d804a3ee710, type: 3}
+  - {fileID: 8300000, guid: e4aa8e5e271358b49bb6125dc64f2bcd, type: 3}
+  - {fileID: 8300000, guid: 38d04d97544825347a07a7fd1bc191c2, type: 3}
+  - {fileID: 8300000, guid: 71b769c6e750bce4f9446aea7921ab5a, type: 3}
+  - {fileID: 8300000, guid: 6d818a264271b1b43b40b5649ac07613, type: 3}
+  - {fileID: 8300000, guid: 1aa2a412ad4b1df46ace13d27716b2ca, type: 3}
+  - {fileID: 8300000, guid: 92e5d72a1c814d04eb461bf87e7957d5, type: 3}
+  - {fileID: 8300000, guid: ade15e684c9c29a43ae231ab3ee3e89c, type: 3}
+  - {fileID: 8300000, guid: 7ea101688727abe45824052e9586e7b5, type: 3}
+  - {fileID: 8300000, guid: ff0460c78985cf348828e51208cc741c, type: 3}
+  - {fileID: 8300000, guid: dbbce275a732961428480481bdbc0a04, type: 3}
+  - {fileID: 8300000, guid: 3888270c9a5551a4f8db57a3a5380693, type: 3}
+  - {fileID: 8300000, guid: 4f667045f604a8240b7d3a86e4379dca, type: 3}
+  - {fileID: 8300000, guid: 62b1ea186c080f34780cd82ab81b8a89, type: 3}
+  - {fileID: 8300000, guid: 947828a288bc67e488277fecb23a3035, type: 3}
   StrikeCount: 3
   TimeLimit: 600
   BombSize: 1
