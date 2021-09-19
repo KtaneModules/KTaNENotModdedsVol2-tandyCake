@@ -30,6 +30,7 @@ public class NotPianoKeysScript : MonoBehaviour
 
     static int moduleIdCounter = 1;
     int moduleId;
+    bool moduleSolved;
     int submissionPointer;
     bool[] pressed = new bool[12];
 
@@ -68,6 +69,8 @@ public class NotPianoKeysScript : MonoBehaviour
             buttons[pos].GetComponentInChildren<KMHighlightable>().gameObject.SetActive(false);
             if (submissionPointer == 12)
             {
+                moduleSolved = true;
+                Debug.LogFormat("[Not Piano Keys #{0}] Module solved.", moduleId);
                 Audio.PlaySoundAtTransform("orderedSolve", transform);
                 StartCoroutine(KeysFade());
                 StartCoroutine(DisplayZero());
@@ -170,25 +173,26 @@ public class NotPianoKeysScript : MonoBehaviour
 #pragma warning disable 414
     private readonly string TwitchHelpMessage = @"Use !{0} press W1 B1 W3 K5 W7 to press those keys.";
 #pragma warning restore 414
-
+    IEnumerator Press(KMSelectable btn, float wait)
+    {
+        btn.OnInteract();
+        yield return new WaitForSeconds(wait);
+    }
     IEnumerator ProcessTwitchCommand(string command)
     {
         command = command.Trim().ToUpperInvariant();
         List<string> parameters = command.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         if (parameters.First() == "PRESS" && parameters.Skip(1).All(x => keyNames.Contains(x)))
+        {
             foreach (string key in parameters.Skip(1))
-            {
-                buttons[Array.IndexOf(keyNames, key)].OnInteract();
-                yield return new WaitForSeconds(0.1f);
-            }
+                yield return Press(buttons[Array.IndexOf(keyNames, key)], 0.1f);
+            if (moduleSolved)
+                yield return "solve";
+        }
     }
-
     IEnumerator TwitchHandleForcedSolve()
     {
         for (int i = submissionPointer; i < 12; i++)
-        {
-            buttons[combinedSequence[submissionPointer]].OnInteract();
-            yield return new WaitForSeconds(0.1f);
-        }
+            yield return Press(buttons[combinedSequence[submissionPointer]], 0.1f);
     }
 }

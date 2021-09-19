@@ -5,19 +5,19 @@ using System.Linq;
 
 namespace NotNumberPad
 {
-	public class Flash : IEnumerable<Button> {
+	public class Flash : IEnumerable<NNPButton> {
 
-        private List<Button> buttons = new List<Button>();
-        public IEnumerator<Button> GetEnumerator()
+        private List<NNPButton> buttons = new List<NNPButton>();
+        public IEnumerator<NNPButton> GetEnumerator()
         { return buttons.GetEnumerator(); }
         IEnumerator IEnumerable.GetEnumerator()
         { return GetEnumerator(); }
 
-		public Flash(IEnumerable<Button> buttons)
+		public Flash(IEnumerable<NNPButton> buttons)
         {
-            this.buttons = new List<Button> (buttons);
+            this.buttons = new List<NNPButton> (buttons);
         }
-        public Button this[int i]
+        public NNPButton this[int i]
         {
             get { return buttons[i]; }
         }

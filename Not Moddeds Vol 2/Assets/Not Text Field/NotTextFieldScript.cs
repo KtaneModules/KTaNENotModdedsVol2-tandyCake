@@ -12,7 +12,7 @@ public class NotTextFieldScript : MonoBehaviour {
     public KMBombInfo Bomb;
     public KMAudio Audio;
     public KMBombModule Module;
-    public Button[] buttons;
+    public NTFButton[] buttons;
 
     static int moduleIdCounter = 1;
     int moduleId;
@@ -87,6 +87,7 @@ public class NotTextFieldScript : MonoBehaviour {
                 buttons[i].submitted = false;
             submissionPointer = 0;
             GenerateLetters();
+            OrderFirstStage();
             StartCoroutine(ShowLetters());
             Module.HandleStrike();
         }

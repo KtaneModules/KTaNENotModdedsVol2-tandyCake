@@ -13,8 +13,8 @@ public class NotNumberPadScript : MonoBehaviour {
     public KMBombInfo Bomb;
     public KMAudio Audio;
     public KMBombModule Module;
-    public Button[] numButtons;
-    public Button clear, submit;
+    public NNPButton[] numButtons;
+    public NNPButton clear, submit;
     public Material diffuseMat, unlitMat;
     public TextMesh displayMesh;
 
@@ -46,15 +46,15 @@ public class NotNumberPadScript : MonoBehaviour {
         for (int i = 0; i < 10; i++)
         {
             int ix = i;
-            numButtons[ix].selectable.OnInteract += delegate ()
-            { ButtonPress(ix); return false; };
+            numButtons[ix].selectable.OnInteract += delegate () { ButtonPress(ix); return false; };
         }
         clear.selectable.OnInteract += delegate () { Clear(); return false; };
         submit.selectable.OnInteract += delegate () { Submit(); return false; };
     }
 
-    void Start ()
+    IEnumerator Start ()
     {
+        yield return null;
         InitializeButtons();
         SetColors();
     }
@@ -74,10 +74,10 @@ public class NotNumberPadScript : MonoBehaviour {
             numButtons[i].value = i;
         }
         Log("The button colors are:");
-        Log(numButtons[7].ToString() + numButtons[8].ToString() + numButtons[9].ToString());
-        Log(numButtons[4].ToString() + numButtons[5].ToString() + numButtons[6].ToString());
-        Log(numButtons[1].ToString() + numButtons[2].ToString() + numButtons[3].ToString());
-        Log(" " + numButtons[0].ToString());
+        Log("{0}{1}{2}", numButtons[7], numButtons[8], numButtons[9]);
+        Log("{0}{1}{2}", numButtons[4], numButtons[5], numButtons[6]);
+        Log("{0}{1}{2}", numButtons[1], numButtons[2], numButtons[3]);
+        Log("{0}{1}{2}", clear, numButtons[0], submit);
 
     }
     void ButtonPress(int ix)
@@ -100,9 +100,9 @@ public class NotNumberPadScript : MonoBehaviour {
     }
     void Clear()
     {
-        displayVal = 0;
         if (flashAnim == null && !moduleSolved)
             flashAnim = StartCoroutine(FlashAnimations());
+        displayVal = 0;
         for (int i = 0; i < 10; i++)
             numButtons[i].SetState(false);
         UpdateDisplay();
@@ -129,7 +129,7 @@ public class NotNumberPadScript : MonoBehaviour {
             }
             Log(string.Format("Submitted {0}, that is correct.", displayVal));
             Audio.PlaySoundAtTransform(new Flash(numButtons.Where(x => x.isLit)).ToString(), transform);
-            foreach (Button button in numButtons.Where(x => x.isLit))
+            foreach (NNPButton button in numButtons.Where(x => x.isLit))
                 button.SetState(false);
             displayVal = 0;
             UpdateDisplay();
@@ -137,6 +137,7 @@ public class NotNumberPadScript : MonoBehaviour {
         else
         {
             Module.HandleStrike();
+            Clear();
             Log(string.Format("Submitted {0} while expected {1}. Strike!", displayVal, answers[submissionPointer]));
         }
         
@@ -164,8 +165,8 @@ public class NotNumberPadScript : MonoBehaviour {
         int val = flash.GetValue(chosenPriorityList);
         int initRow = (val - 1) % 9;
         int row = initRow;
-        Log("The number obtained from the priority list is " + val);
-        Log("Using starting row #" + (initRow + 1));
+        Log("The number obtained from the priority list is {0}", val);
+        Log("Using starting row #{0}", initRow + 1);
         int[] primes = { 2, 3, 5, 7 };
         Func<bool>[][] rules = new Func<bool>[][]
         {
@@ -200,7 +201,7 @@ public class NotNumberPadScript : MonoBehaviour {
                 () => flash.Any(x => (int)x.color == ((int)submit.color + 1 + stage) % 4),
                 () => flashes[0].Concat(flashes[1]).Concat(flashes[2]).Sum(x => x.value) % 4 == 0 || flashes[0].Concat(flashes[1]).Concat(flashes[2]).Sum(x => x.value) % 5 == 0,
                 () => Enumerable.Range(0,10).Count(x => flashes[0].Select(y => y.value.Value).Contains(x) && flashes[2].Select(y => y.value.Value).Contains(x)) >= 2,
-                () => flashes[1].Sum(x => x.value) % 2 == flashes[2].Sum(x => x.value) % 2,
+                () => flashes[1].Sum(x => x.value) % 2 != flashes[2].Sum(x => x.value) % 2,
                 () => flashes[0].Concat(flashes[1]).Concat(flashes[2]).Count(x => x.color == ButtonColor.Yellow) <= 2,
                 () => flashes.All(x => x.Select(y => y.color).Contains(ButtonColor.Green)),
                 () => flashes[0].Concat(flashes[1]).Concat(flashes[2]).Count(x => x.color == ButtonColor.Red) >= 6,
@@ -217,11 +218,11 @@ public class NotNumberPadScript : MonoBehaviour {
             row = initRow;
             Log("No statements are true. Using the starting row.");
         }
-        else Log("The first true row is row #" + (row + 1));
+        else Log("The first true row is row #{0}", row + 1);
         int multiplier = Data.multiplierTable[(int)clear.color, row];
-        Log("Using multiplier " + multiplier);
-        Log("The correct answer for this stage is " + (val * multiplier) % 10000);
-        return (val * multiplier) % 10000;
+        Log("Using multiplier {0}", multiplier);
+        Log("The correct answer for this stage is {0}", val * multiplier % 10000);
+        return val * multiplier % 10000;
     }
 
     IEnumerator FlashAnimations()
@@ -233,10 +234,10 @@ public class NotNumberPadScript : MonoBehaviour {
             {
                 yield return new WaitForSeconds(0.5f);
                 Audio.PlaySoundAtTransform(flash.ToString(), transform);
-                foreach (Button button in flash)
+                foreach (NNPButton button in flash)
                     button.SetState(true);
                 yield return new WaitForSeconds(0.5f);
-                foreach (Button button in flash)
+                foreach (NNPButton button in flash)
                     button.SetState(false);
             }
             yield return null;
@@ -248,22 +249,25 @@ public class NotNumberPadScript : MonoBehaviour {
             displayMesh.text = string.Empty;
         else displayMesh.text = displayVal.ToString();
     }
-    void Log(string msg)
+    void Log(string msg, params object[] args)
     {
-        Debug.LogFormat("[Not Number Pad #{0}] {1}", moduleId, msg);
+        Debug.LogFormat("[Not Number Pad #{0}] {1}", moduleId, string.Format(msg, args));
     }
 
     #pragma warning disable 414
     private readonly string TwitchHelpMessage = @"Use [!{0} start] to press submit. Use [!{0} submit 123 456 789] to submit those numbers into the module.";
     #pragma warning restore 414
-
+    IEnumerator Press(KMSelectable btn, float delay)
+    {
+        btn.OnInteract();
+        yield return new WaitForSeconds(delay);
+    }
     IEnumerator ProcessTwitchCommand (string command) {
         command = command.Trim().ToUpperInvariant();
         if (command == "START")
         {
             yield return null;
-            submit.selectable.OnInteract();
-            yield return new WaitForSeconds(0.1f);
+            yield return Press(submit.selectable, 0.1f);
             yield break;
         }
         Match m = Regex.Match(command, @"^SUBMIT\s+([0-9\s]+)$");
@@ -273,19 +277,12 @@ public class NotNumberPadScript : MonoBehaviour {
             yield return null;
             foreach (string num in submission)
             {
-                if (num.StartsWith(displayMesh.text) && displayMesh.text.Length != 0)
-                {
-                    clear.selectable.OnInteract();
-                    yield return new WaitForSeconds(0.1f);
-                }
+                if (!num.StartsWith(displayMesh.text) && displayMesh.text.Length != 0)
+                    yield return Press(clear.selectable, 0.1f);
                 foreach (int digit in num.Select(x => x - '0').Skip(displayMesh.text.Length))
-                {
-                    numButtons.First(x => x.value == digit).selectable.OnInteract();
-                    yield return new WaitForSeconds(0.25f);
-                }
+                    yield return Press(numButtons.First(x => x.value == digit).selectable, 0.25f);
                 yield return new WaitForSeconds(0.1f);
-                submit.selectable.OnInteract();
-                yield return new WaitForSeconds(0.75f);
+                yield return Press(submit.selectable, 0.5f);
             }
         }
     }
@@ -293,25 +290,15 @@ public class NotNumberPadScript : MonoBehaviour {
     IEnumerator TwitchHandleForcedSolve () 
     {
         if (initState)
-        {
-            submit.selectable.OnInteract();
-            yield return new WaitForSeconds(0.2f);
-        }
+            yield return Press(submit.selectable, 0.2f);
         while (!moduleSolved)
         {
-            if (answers[submissionPointer].ToString().StartsWith(displayMesh.text) && displayMesh.text.Length != 0)
-            {
-                clear.selectable.OnInteract();
-                yield return new WaitForSeconds(0.1f);
-            }
+            if (!answers[submissionPointer].ToString().StartsWith(displayMesh.text) && displayMesh.text.Length != 0)
+                yield return Press(clear.selectable, 0.1f);
             foreach (int digit in answers[submissionPointer].ToString().Select(x => x - '0'))
-            {
-                numButtons.First(x => x.value == digit).selectable.OnInteract();
-                yield return new WaitForSeconds(0.25f);
-            }
+                yield return Press(numButtons.First(x => x.value == digit).selectable, 0.25f);
             yield return new WaitForSeconds(0.1f);
-            submit.selectable.OnInteract();
-            yield return new WaitForSeconds(0.75f);
+            yield return Press(submit.selectable, 0.5f);
         }
     }
 }
