@@ -207,18 +207,21 @@ public class NotNumberPadScript : MonoBehaviour {
                 () => flashes[0].Concat(flashes[1]).Concat(flashes[2]).Count(x => x.color == ButtonColor.Red) >= 6,
             },
         };
-        for (int i = 0; i < 9; i++)
-        {
-            if (rules[stage][row]())
-                break;
-            else row = (row + 1) % 9;
-        }
         if (rules[stage].All(x => !x()))
         {
             row = initRow;
             Log("No statements are true. Using the starting row.");
         }
-        else Log("The first true row is row #{0}", row + 1);
+        else
+        {
+            for (int i = 0; i < 9; i++)
+            {
+                if (rules[stage][row]())
+                    break;
+                else row = (row + 1) % 9;
+            }
+            Log("The first true row is row #{0}", row + 1);
+        }
         int multiplier = Data.multiplierTable[(int)clear.color, row];
         Log("Using multiplier {0}", multiplier);
         Log("The correct answer for this stage is {0}", val * multiplier % 10000);
@@ -298,7 +301,8 @@ public class NotNumberPadScript : MonoBehaviour {
             foreach (int digit in answers[submissionPointer].ToString().Select(x => x - '0'))
                 yield return Press(numButtons.First(x => x.value == digit).selectable, 0.25f);
             yield return new WaitForSeconds(0.1f);
-            yield return Press(submit.selectable, 0.5f);
+            yield return Press(submit.selectable, 0.3f);
+            yield return true;
         }
     }
 }

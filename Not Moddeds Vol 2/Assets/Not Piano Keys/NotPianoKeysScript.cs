@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
+using System.Text;
 using UnityEngine;
 using KModkit;
 using NotPianoKeys;
@@ -22,7 +22,7 @@ public class NotPianoKeysScript : MonoBehaviour
     private int[] combinedSequence = new int[12];
     private static readonly string[] keyNames = { "W1", "W2", "W3", "W4", "W5", "W6", "W7", "B1", "B2", "B3", "B4", "B5" };
     private static readonly string[] quadNames = { "top-left", "top-right", "bottom-right", "bottom-left" };
-
+    
     int chosen3x3;
     int[] chosenQuad;
     int intersectionStart;
@@ -161,11 +161,11 @@ public class NotPianoKeysScript : MonoBehaviour
     IEnumerator DisplayZero()
     {
         yield return new WaitForSeconds(0.8f);
-        char[] newDisplay = display.text.ToCharArray();
+        StringBuilder newDisplay = new StringBuilder(display.text);
         for (int i = 0; i < 3; i++)
         {
             newDisplay[4 * i] = '0';
-            display.text = newDisplay.Join("");
+            display.text = newDisplay.ToString();
             yield return new WaitForSeconds(1.6f);
         }
     }
@@ -184,6 +184,7 @@ public class NotPianoKeysScript : MonoBehaviour
         List<string> parameters = command.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         if (parameters.First() == "PRESS" && parameters.Skip(1).All(x => keyNames.Contains(x)))
         {
+            yield return null;
             foreach (string key in parameters.Skip(1))
                 yield return Press(buttons[Array.IndexOf(keyNames, key)], 0.1f);
             if (moduleSolved)
