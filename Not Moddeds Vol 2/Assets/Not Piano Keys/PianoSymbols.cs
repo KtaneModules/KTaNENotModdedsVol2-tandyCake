@@ -67,7 +67,7 @@
                 new PianoSymbol(SymbolName.Whole_Note, 'w', 2) ,
                 new PianoSymbol(SymbolName.Breve, '', 2) ,
                 new PianoSymbol(SymbolName.C_Clef, 'B', 2) ,
-                new PianoSymbol(SymbolName.Sixteenth_Note, 'w', 2) ,
+                new PianoSymbol(SymbolName.Sixteenth_Note, 'x', 2) ,
                 new PianoSymbol(SymbolName.Sixteenth_Rest, '', 2) ,
                 new PianoSymbol(SymbolName.Quarter_Rest, '', 2)
             }
