@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 9b645c7444dd80743abcf5a7b336810f
+guid: f5f8d6d09e4727048a7e560cfd7701c3
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
-    100000: default
-    100002: //RootNode
-    400000: default
-    400002: //RootNode
-    2100000: defaultMat
-    2300000: default
-    3300000: default
-    4300000: default
+    100000: //RootNode
+    400000: //RootNode
+    2100000: Wire_Red
+    2100002: Wire
+    2100004: Diffuse_Material
+    2300000: //RootNode
+    3300000: //RootNode
+    4300000: wiring
   externalObjects: {}
   materials:
     importMaterials: 1

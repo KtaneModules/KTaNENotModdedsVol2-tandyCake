@@ -3,25 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using NotNumberPad;
 
-public class NNPButton : ButtonScript
+public class NNPButton : MonoBehaviour
 {
 	public MeshRenderer buttonMesh;
+	public KMSelectable selectable;
 	[HideInInspector]
 	public ButtonColor color;
 	[HideInInspector]
-	public bool isLit;
+	public bool isLit = false;
 	public int? value = null;
 
 	private NotNumberPadScript parentScript;
 	private Coroutine anim;
+	[SerializeField]
+	private TextMesh labelObj;
+	private string label;
 
-    public override void Start()
+	private bool showingCB = false;
+
+	public void Awake()
 	{
-		Debug.Log("buttonmesh is null: " + buttonMesh == null);
-		Debug.Log("selectable is null: " + selectable == null);
-
 		parentScript = transform.parent.parent.parent.GetComponent<NotNumberPadScript>();
 		selectable.OnInteract += MoveButton;
+		if (labelObj == null)
+			labelObj = GetComponentInChildren<TextMesh>();
+
+		label = labelObj.text;
 	}
 	public bool MoveButton()
 	{
@@ -61,6 +68,14 @@ public class NNPButton : ButtonScript
 		}
 		transform.localPosition = new Vector3(transform.localPosition.x, -0.0044f, transform.localPosition.z);
 	}
+
+	public void ToggleCBDisplaying()
+    {
+		showingCB = !showingCB;
+		if (showingCB)
+			labelObj.text = value == null ? Data.colorAbbreviations[color] : color.ToString().Substring(0, 1);
+		else labelObj.text = label;
+    }
 
     public void UpdateAppearance()
 	{

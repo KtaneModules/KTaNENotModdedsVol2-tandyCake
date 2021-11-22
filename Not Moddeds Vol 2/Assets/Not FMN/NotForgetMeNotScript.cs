@@ -173,10 +173,11 @@ public class NotForgetMeNotScript : MonoBehaviour
         bottomDisplay.gameObject.SetActive(false);
         submissionScreen.gameObject.SetActive(true);
         submissionScreen.text = string.Empty;
-        string last24 = inputtedCode.Length < 24 ? inputtedCode.PadRight(24, '-') : inputtedCode.TakeLast(24).Join("");
+        int numbersDisplayed = inputtedCode.Length < 24 ? inputtedCode.Length : (inputtedCode.Length % 12) + 12;
+        string displayedsection = inputtedCode.TakeLast(numbersDisplayed).Join("").PadRight(24, '-');
         for (int i = 0; i < 24; i++)
         {
-            submissionScreen.text += last24[i];
+            submissionScreen.text += displayedsection[i];
             if (i % 3 == 2)
                 submissionScreen.text += ' ';
             if (i == 11)

@@ -674,6 +674,7 @@ GameObject:
   - component: {fileID: 114328349302636992}
   - component: {fileID: 114066971576163834}
   - component: {fileID: 114485668788090044}
+  - component: {fileID: 114401858682018766}
   - component: {fileID: 114669798374299844}
   - component: {fileID: 114007542827760086}
   m_Layer: 0
@@ -3451,10 +3452,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16279bc4b6df8f4bacbf6ad4e50e809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectable: {fileID: 114278720782722420}
   buttonMesh: {fileID: 23224896385909282}
+  selectable: {fileID: 114278720782722420}
   color: 0
   isLit: 0
+  labelObj: {fileID: 0}
 --- !u!114 &114006670599626590
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3482,6 +3484,7 @@ MonoBehaviour:
   Bomb: {fileID: 114669798374299844}
   Audio: {fileID: 114485668788090044}
   Module: {fileID: 114066971576163834}
+  Colorblind: {fileID: 114401858682018766}
   numButtons:
   - {fileID: 114478257634412724}
   - {fileID: 114000441057760070}
@@ -3563,10 +3566,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16279bc4b6df8f4bacbf6ad4e50e809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectable: {fileID: 114700507659824950}
   buttonMesh: {fileID: 23851114236856976}
+  selectable: {fileID: 114700507659824950}
   color: 0
   isLit: 0
+  labelObj: {fileID: 0}
 --- !u!114 &114097003776091120
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3643,10 +3647,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16279bc4b6df8f4bacbf6ad4e50e809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectable: {fileID: 114970571976868196}
   buttonMesh: {fileID: 23259509660612684}
+  selectable: {fileID: 114970571976868196}
   color: 0
   isLit: 0
+  labelObj: {fileID: 0}
 --- !u!114 &114239070818044796
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3732,10 +3737,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16279bc4b6df8f4bacbf6ad4e50e809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectable: {fileID: 114393453769905644}
   buttonMesh: {fileID: 23215423672969046}
+  selectable: {fileID: 114393453769905644}
   color: 0
   isLit: 0
+  labelObj: {fileID: 102548306679897264}
 --- !u!114 &114306495809153198
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3747,10 +3753,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16279bc4b6df8f4bacbf6ad4e50e809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectable: {fileID: 114514200696119158}
   buttonMesh: {fileID: 23505010258624768}
+  selectable: {fileID: 114514200696119158}
   color: 0
   isLit: 0
+  labelObj: {fileID: 0}
 --- !u!114 &114328349302636992
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3855,6 +3862,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HighlightScale: {x: 0, y: 0, z: 0}
   OutlineAmount: 0
+--- !u!114 &114401858682018766
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1657119885342038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1cfb889a07d5fd4e9baed7960bb397f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _colorblindMode: 0
 --- !u!114 &114425818841160584
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3927,10 +3946,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16279bc4b6df8f4bacbf6ad4e50e809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectable: {fileID: 114732298654537640}
   buttonMesh: {fileID: 23226076511169790}
+  selectable: {fileID: 114732298654537640}
   color: 0
   isLit: 0
+  labelObj: {fileID: 0}
 --- !u!114 &114457996499069836
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3968,10 +3988,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16279bc4b6df8f4bacbf6ad4e50e809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectable: {fileID: 114438626862444620}
   buttonMesh: {fileID: 23031582521899094}
+  selectable: {fileID: 114438626862444620}
   color: 0
   isLit: 0
+  labelObj: {fileID: 0}
 --- !u!114 &114481232858609884
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3996,10 +4017,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16279bc4b6df8f4bacbf6ad4e50e809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectable: {fileID: 114594021317599936}
   buttonMesh: {fileID: 23222588426881558}
+  selectable: {fileID: 114594021317599936}
   color: 0
   isLit: 0
+  labelObj: {fileID: 0}
 --- !u!114 &114485668788090044
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4118,10 +4140,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16279bc4b6df8f4bacbf6ad4e50e809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectable: {fileID: 114784187776854058}
   buttonMesh: {fileID: 23850880603387756}
+  selectable: {fileID: 114784187776854058}
   color: 0
   isLit: 0
+  labelObj: {fileID: 0}
 --- !u!114 &114642599759498462
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4323,10 +4346,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16279bc4b6df8f4bacbf6ad4e50e809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectable: {fileID: 114383062134440508}
   buttonMesh: {fileID: 23222338828930880}
+  selectable: {fileID: 114383062134440508}
   color: 0
   isLit: 0
+  labelObj: {fileID: 0}
 --- !u!114 &114854925849149642
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4416,10 +4440,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16279bc4b6df8f4bacbf6ad4e50e809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectable: {fileID: 114962987476529894}
   buttonMesh: {fileID: 23109005610370874}
+  selectable: {fileID: 114962987476529894}
   color: 0
   isLit: 0
+  labelObj: {fileID: 0}
 --- !u!114 &114941528087503722
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4464,10 +4489,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d16279bc4b6df8f4bacbf6ad4e50e809, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectable: {fileID: 114654774107841250}
   buttonMesh: {fileID: 23781321368587966}
+  selectable: {fileID: 114654774107841250}
   color: 0
   isLit: 0
+  labelObj: {fileID: 102082862094582022}
 --- !u!114 &114970571976868196
 MonoBehaviour:
   m_ObjectHideFlags: 1

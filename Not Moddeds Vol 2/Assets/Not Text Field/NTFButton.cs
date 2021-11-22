@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NTFButton : ButtonScript 
+public class NTFButton : MonoBehaviour 
 {
+	public KMSelectable selectable;
 	public TextMesh label;
 	[HideInInspector]
 	public char displayedLetter;

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace NotNumberPad
 {
@@ -32,6 +33,13 @@ namespace NotNumberPad
             { 20, 25, 23, 31, 21, 22, 19, 34, 12, },
             { 35, 6, 11, 18, 9, 42, 36, 8, 46, },
             { 10, 13, 17, 4, 45, 2, 27, 26, 3, },
+        };
+        public static readonly Dictionary<ButtonColor, string> colorAbbreviations = new Dictionary<ButtonColor, string>()
+        {
+            { ButtonColor.Red, "RED" },
+            { ButtonColor.Yellow, "YLW" },
+            { ButtonColor.Green, "GRN" },
+            { ButtonColor.Blue, "BLU" }
         };
     }
 }
