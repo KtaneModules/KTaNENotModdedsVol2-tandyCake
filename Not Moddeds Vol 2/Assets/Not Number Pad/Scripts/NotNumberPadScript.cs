@@ -47,7 +47,7 @@ public class NotNumberPadScript : MonoBehaviour {
             int ix = i;
             numButtons[ix].selectable.OnInteract += delegate () { ButtonPress(ix); return false; };
         }
-        clear.selectable.OnInteract += delegate () { Clear(); return false; };
+        clear.selectable.OnInteract += delegate () { ShowCB(); Clear(); return false; };
         submit.selectable.OnInteract += delegate () { Submit(); return false; };
         clear.selectable.OnInteractEnded += delegate () { ShowCB(); };
        
@@ -98,23 +98,28 @@ public class NotNumberPadScript : MonoBehaviour {
     }
     void Clear()
     {
-        ShowCB();
-        if (flashAnim == null && !moduleSolved)
+        if (flashAnim == null && !moduleSolved && !initState)
         {
-
             flashAnim = StartCoroutine(FlashAnimations());
-            for (int i = 0; i < 10; i++)
-                numButtons[i].SetState(false);
             displayVal = 0;
             UpdateDisplay();
         }
+        if (flashAnim == null) 
+            for (int i = 0; i < 10; i++)
+                numButtons[i].SetState(false);
     }
     void Submit()
     {
         if (initState)
             GenerateStage();
         else if (moduleSolved)
+        {
+            if (numButtons.Count(x => x.isLit) != 0)
+                Audio.PlaySoundAtTransform(new Flash(numButtons.Where(x => x.isLit)).ToString(), transform);
+            foreach (NNPButton button in numButtons.Where(x => x.isLit))
+                button.SetState(false);
             return;
+        }
         else if (answers[submissionPointer] == displayVal)
         {
             submissionPointer++;
@@ -141,6 +146,7 @@ public class NotNumberPadScript : MonoBehaviour {
             Module.HandleStrike();
             Log(string.Format("Submitted {0} while expected {1}. Strike!", displayVal, answers[submissionPointer]));
             Clear();
+            submissionPointer = 0;
         }
         
     }
@@ -168,7 +174,7 @@ public class NotNumberPadScript : MonoBehaviour {
         }
         Log(string.Format("The numbers {0} flash, corresponding to the colors {1}.", flashes.Last().Select(x => x.value).Join(), flashes.Select(x => x.ToString()).Join()));
         answers.Add(CalculateAnswer(flashes.Last(), stage));
-        Log("You should submit the numbers {0}.", answers.Join(", "));
+        Log("You should submit the number{1} {0}.", answers.Join(", "), answers.Count == 1 ? "" : "s");
 
         flashAnim = StartCoroutine(FlashAnimations());
     }
@@ -275,7 +281,8 @@ public class NotNumberPadScript : MonoBehaviour {
     IEnumerator Press(KMSelectable btn, float delay)
     {
         btn.OnInteract();
-        btn.OnInteractEnded();
+        if (btn.OnInteractEnded != null)
+            btn.OnInteractEnded();
         yield return new WaitForSeconds(delay);
     }
     IEnumerator ProcessTwitchCommand (string command) {
