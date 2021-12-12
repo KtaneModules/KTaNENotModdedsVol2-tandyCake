@@ -45,7 +45,7 @@ public class NotNumberPadScript : MonoBehaviour {
         for (int i = 0; i < 10; i++)
         {
             int ix = i;
-            numButtons[ix].selectable.OnInteract += delegate () { ButtonPress(ix); return false; };
+            numButtons[ix].selectable.OnInteract += delegate () { NumButtonPress(ix); return false; };
         }
         clear.selectable.OnInteract += delegate () { ShowCB(); Clear(); return false; };
         submit.selectable.OnInteract += delegate () { Submit(); return false; };
@@ -78,7 +78,7 @@ public class NotNumberPadScript : MonoBehaviour {
         Log("{0}{1}{2}", clear, numButtons[0], submit);
 
     }
-    void ButtonPress(int ix)
+    void NumButtonPress(int ix)
     {
         if (initState || displayVal.ToString().Length == 4)
             return;
@@ -104,9 +104,12 @@ public class NotNumberPadScript : MonoBehaviour {
             displayVal = 0;
             UpdateDisplay();
         }
-        if (flashAnim == null) 
-            for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 10; i++)
+            if (numButtons[i].isPressed)
+            {
+                numButtons[i].isPressed = false;
                 numButtons[i].SetState(false);
+            }
     }
     void Submit()
     {

@@ -15,7 +15,7 @@ namespace NotNumberPad
 
 		public Flash(IEnumerable<NNPButton> buttons)
         {
-            this._buttons = new List<NNPButton> (buttons);
+            _buttons = new List<NNPButton> (buttons);
         }
         public NNPButton this[int i]
         {

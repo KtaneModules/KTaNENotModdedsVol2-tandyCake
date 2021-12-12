@@ -10,16 +10,16 @@ public class NNPButton : MonoBehaviour
 	[HideInInspector]
 	public ButtonColor color;
 	[HideInInspector]
-	public bool isLit = false;
+	public bool isLit, isPressed;
 	public int? value = null;
 
 	private NotNumberPadScript parentScript;
 	private Coroutine anim;
 	[SerializeField]
 	private TextMesh labelObj;
-	private string label;
+	private string _label;
 
-	private bool showingCB = false;
+	private bool _showingCB = false;
 
 	public void Awake()
 	{
@@ -28,10 +28,11 @@ public class NNPButton : MonoBehaviour
 		if (labelObj == null)
 			labelObj = GetComponentInChildren<TextMesh>();
 
-		label = labelObj.text;
+		_label = labelObj.text;
 	}
 	public bool MoveButton()
 	{
+		isPressed = true;
 		if (anim != null)
 			StopCoroutine(anim);
 		anim = StartCoroutine(ButtonAnimation());
@@ -71,10 +72,10 @@ public class NNPButton : MonoBehaviour
 
 	public void ToggleCBDisplaying()
     {
-		showingCB = !showingCB;
-		if (showingCB)
+		_showingCB = !_showingCB;
+		if (_showingCB)
 			labelObj.text = value == null ? Data.colorAbbreviations[color] : color.ToString().Substring(0, 1);
-		else labelObj.text = label;
+		else labelObj.text = _label;
     }
 
     public void UpdateAppearance()

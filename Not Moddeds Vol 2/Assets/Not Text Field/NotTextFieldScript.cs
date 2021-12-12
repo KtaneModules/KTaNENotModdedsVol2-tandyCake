@@ -26,7 +26,8 @@ public class NotTextFieldScript : MonoBehaviour {
     private int[] otherPositions = new int[3];
     private char[] solution = new char[3];
     private int submissionPointer;
-    private bool animating;
+    private bool animating = true;
+    private string availableLetters;
 
     void Awake () {
         moduleId = moduleIdCounter++;
@@ -45,15 +46,18 @@ public class NotTextFieldScript : MonoBehaviour {
         InitializeButtons();
         bgChar = alphabet.PickRandom();
         Log("The letter which appears 9 times is {0}", bgChar);
+        availableLetters = "ABCDEF".Replace(bgChar.ToString(), "");
 
         GenerateLetters();
         OrderFirstStage();
         GetArrows();
-        StartCoroutine(ShowLetters());
+        Module.OnActivate += () => StartCoroutine(ShowLetters(true));
     }
     void ButtonPress(int pos)
     {
-        Audio.PlaySoundAtTransform("bloop" + Rnd.Range(0, 5), buttons[pos].transform);
+        if (availableLetters.Contains(buttons[pos].displayedLetter))
+            Audio.PlaySoundAtTransform("bloop" + availableLetters.IndexOf(buttons[pos].displayedLetter), buttons[pos].transform);
+        else Audio.PlaySoundAtTransform("bloop" + Rnd.Range(0, 5), buttons[pos].transform);
         buttons[pos].selectable.AddInteractionPunch();
         if (buttons[pos].submitted)
             return;
@@ -138,13 +142,14 @@ public class NotTextFieldScript : MonoBehaviour {
         };
     }
     
-    IEnumerator ShowLetters()
+    IEnumerator ShowLetters(bool start = false)
     {
         animating = true;
         for (int i = 0; i < 12; i++)
             if (!buttons[i].submitted)
                 buttons[i].label.text = "-";
-        yield return new WaitForSeconds(1);
+        if (!start)
+            yield return new WaitForSeconds(1);
         int[] order = Enumerable.Range(0, 12).ToArray().Shuffle();
         for (int i = 0; i < 12; i++)
         {

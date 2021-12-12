@@ -171,7 +171,12 @@ public class NotProbingScript : MonoBehaviour
 #pragma warning disable 414
     private readonly string TwitchHelpMessage = @"Use !{0} connect 1 4 6 5 to connect the clips to those wires. Use !{0} cycle 1 3 4 5 to connect those wires and pause after every connection.";
 #pragma warning restore 414
-
+    IEnumerator Press(KMSelectable btn, float delay)
+    {
+        btn.OnInteract();
+        Debug.LogFormat("PRESS");
+        yield return new WaitForSeconds(delay);
+    }
     IEnumerator ProcessTwitchCommand(string command)
     {
         command = command.Trim().ToUpperInvariant();
@@ -182,27 +187,44 @@ public class NotProbingScript : MonoBehaviour
             foreach (string wire in parameters.Skip(1))
             {
                 if (!clipPlacements.Any(x => x == -1))
-                    wireSelectables[clipPlacements.PickRandom()].OnInteract();
-                wireSelectables[wire[0] - '1'].OnInteract();
-                yield return new WaitForSeconds(0.25f);
+                    yield return Press(wireSelectables[clipPlacements.PickRandom()], 0);
+                yield return Press(wireSelectables[wire[0] - '1'], 0.25f);
             }
         }
-        if (Regex.IsMatch(command, @"^CYCLE(\s+[1-6])+$"))
+        else
         {
-            yield return null;
-            parameters.RemoveAt(0);
-            for (int i = 0; i < parameters.Count; i++)
+            Match m = Regex.Match(command, @"^CYCLE\s*((?:[1-6]\s*)+)$");
+            if (m.Success)
             {
-                wireSelectables[parameters[i][0] - '1'].OnInteract();
-                if (i % 2 == 1)
+                int[] allNums = m.Groups[1].Value.Where(x => !char.IsWhiteSpace(x)).Select(ch => ch - '1').ToArray();
+                if (allNums.Length % 2 != 0)
                 {
-                    yield return new WaitForSeconds(1);
-                    wireSelectables[clipPlacements.PickRandom()].OnInteract();
+                    yield return "sendtochaterror Cycle cannot be performed with an even number of arguments.";
+                    yield break;
                 }
-                else yield return new WaitForSeconds(0.1f);
+                int[][] allPairs =
+                    Enumerable.Range(0, allNums.Length / 2)
+                    .Select(pos => allNums
+                        .Skip(2 * pos)
+                        .Take(2)
+                        .ToArray()).ToArray();
+                if (allPairs.Any(p => p[0] == p[1]))
+                    yield return "sendtochaterror You cannot cycle with two of the same wire.";
+                else
+                {
+                    yield return null;
+                    foreach (int[] pair in allPairs)
+                    {
+                        if (!clipPlacements.Any(x => x == -1))
+                            yield return Press(wireSelectables[clipPlacements.PickRandom()], 0);
+                        yield return Press(wireSelectables[pair[0]], 0.1f);
+                        yield return "trycancel";
+                        yield return Press(wireSelectables[pair[1]], 1.5f);
+                    }
+                    if (!clipPlacements.Any(x => x == -1))
+                        yield return Press(wireSelectables[clipPlacements.PickRandom()], 0);
+                }
             }
         }
-
-        yield return null;
     }
 }
