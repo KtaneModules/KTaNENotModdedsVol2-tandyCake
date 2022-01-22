@@ -26,7 +26,7 @@ public class NotPianoKeysScript : MonoBehaviour
     int chosen3x3;
     int[] chosenQuad;
     int intersectionStart;
-    List<string> swaps = new List<string>();
+    List<string> swaps = new List<string>(4);
 
     static int moduleIdCounter = 1;
     int moduleId;
@@ -103,9 +103,9 @@ public class NotPianoKeysScript : MonoBehaviour
     }
     void GenerateBlackSequence()
     {
-        var remainder = Enumerable.Range(0, 5).Where(x => !blackSequence.Contains(x));
+        List<int> remainder = Enumerable.Range(0, 5).Where(x => !blackSequence.Contains(x)).ToList();
         if (Bomb.GetSerialNumberNumbers().Any(x => x % 5 == 0))
-            remainder = remainder.Reverse();
+            remainder.Reverse();
         blackSequence = blackSequence.Concat(remainder).ToArray();
     }
     void GenerateWhiteSequence()
@@ -132,7 +132,7 @@ public class NotPianoKeysScript : MonoBehaviour
         display.text = displayedSymbols.Select(x => x.symbol).Join("   ");
         Debug.LogFormat("[Not Piano Keys #{0}] The displayed symbols are: {1}.", moduleId, displayedSymbols.Select(x => x.name.ToString().Replace('_', ' ')).Join(", "));
         Debug.LogFormat("[Not Piano Keys #{0}] The black sequence is {1}.", moduleId, blackSequence.Select(x => x + 1).Join());
-        Debug.LogFormat("[Not Piano Keys #{0}] The used 3x3 is #{1} in reading order. Use the {2} quadrant.", moduleId, chosen3x3 + 1, quadNames[displayedSymbols[0].GetValue()]);
+        Debug.LogFormat("[Not Piano Keys #{0}] The used 3×3 is #{1} in reading order. Use the {2} quadrant.", moduleId, chosen3x3 + 1, quadNames[displayedSymbols[0].GetValue()]);
         Debug.LogFormat("[Not Piano Keys #{0}] Perform the swaps {1}.", moduleId, swaps.Join(", "));
         Debug.LogFormat("[Not Piano Keys #{0}] The white sequence is {1}.", moduleId, whiteSequence.Select(x => x + 1).Join());
         Debug.LogFormat("[Not Piano Keys #{0}] The resulting ordered sequence is {1}.", moduleId, combinedSequence.Select(x => keyNames[x]).Join());
@@ -181,7 +181,7 @@ public class NotPianoKeysScript : MonoBehaviour
     IEnumerator ProcessTwitchCommand(string command)
     {
         command = command.Trim().ToUpperInvariant();
-        List<string> parameters = command.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        List<string> parameters = command.Split(new char[] { ' ', ',', ';' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         if (parameters.First() == "PRESS" && parameters.Skip(1).All(x => keyNames.Contains(x)))
         {
             yield return null;
