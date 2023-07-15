@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 using KModkit;
-using System.Threading;
 
 public class NotForgetMeNotScript : MonoBehaviour
 {
@@ -187,7 +186,6 @@ public class NotForgetMeNotScript : MonoBehaviour
     }
     void DoLogging()
     {
-        Debug.LogFormat("[Forget Me #{0}] Generated pairs are {1}.", moduleId, Enumerable.Range(0, 9).Select(ix => string.Format("[{0} {1}]", rightNums[ix], bottomNums[ix])).Join(", "));
         Debug.LogFormat("[Forget Me #{0}] Module generated with grid {1}.", moduleId, givenPuzzle.Select(x => x == 0 ? "-" : x.ToString()).Join());
         Debug.LogFormat("[Forget Me #{0}] The solution grid is {1}.", moduleId, solution.Select(x => x == 0 ? "-" : x.ToString()).Join());
 
@@ -260,93 +258,9 @@ public class NotForgetMeNotScript : MonoBehaviour
                 if (num == '0')
                     zeroButton.OnInteract();
                 else buttons[num - '1'].OnInteract();
+                yield return new WaitForSeconds(0.05f);
             }
-
         }
 
-    }
-    IEnumerator TwitchHandleForcedSolve()
-    {
-        if (!inputting)
-        {
-            zeroButton.OnInteract();
-            yield return new WaitForSeconds(0.1f);
-        }
-        List<int> path = null;
-        List<Movement> allMoves = new List<Movement>();
-        int[] startConfig = currentPuzzle.ToArray();
-        var thread = new Thread(() =>
-        {
-            string stack = "";
-            try
-            {
-
-                Queue<int[]> q = new Queue<int[]>();
-                HashSet<string> visitedSets = new HashSet<string>();
-                q.Enqueue(startConfig);
-                int count = 0;
-                while (q.Count > 0)
-                {
-                    int[] cur = q.Dequeue();
-                    if (cur.SequenceEqual(solution))
-                        break;
-                    int zeroIx = Array.IndexOf(cur, 0);
-                    foreach (int pressablePos in GetAdjacents(3, 3, zeroIx))
-                    {
-                        if ((pressablePos == 0 && (cur[0] == solution[0])) 
-                            || ((pressablePos == 1 || pressablePos == 2) && cur[1] == solution[1] && cur[2] == solution[2]) 
-                            || ((pressablePos == 3 || pressablePos == 6) && cur[3] == solution[3] && cur[6] == solution[6])) //shortcuts if certain tiles are already in place.
-                            continue;
-                        int[] newPos = Swap(cur.ToArray(), zeroIx, pressablePos);
-                        if (visitedSets.Add(newPos.Join("")))
-                        {
-                            count++;
-                            stack += newPos.Join("") + "\n";
-                            if (count % 500 == 0)
-                                Debug.Log(stack);
-                            q.Enqueue(newPos);
-                            allMoves.Add(new Movement(cur, newPos, cur[pressablePos]));
-                        }
-                    }
-                }
-                Debug.Log("Found path");
-                Movement lastMove = allMoves.First(x => x.start.SequenceEqual(solution));
-                List<int> pressPath = new List<int>() { lastMove.movedItem };
-                while (!lastMove.start.SequenceEqual(startConfig))
-                {
-                    lastMove = allMoves.First(x => x.end.SequenceEqual(lastMove.start));
-                    pressPath.Add(lastMove.movedItem);
-                }
-                pressPath.Reverse();
-                path = pressPath;
-            }
-            catch (Exception e)
-            {
-                Debug.Log(stack);
-                Debug.Log(e.Message);
-                throw;
-            }
-        });
-        thread.Start();
-        while (path == null)
-            yield return true;
-        Debug.Log("Thread done!");
-        foreach (int ix in path)
-        {
-            buttons[ix].OnInteract();
-            yield return new WaitForSeconds(0.075f);
-        }
-    }
-    struct Movement
-    {
-        public int[] start;
-        public int[] end;
-        public int movedItem;
-        public Movement(int[] s, int[] e, int m)
-        {
-            start = s;
-            end = e;
-            movedItem = m;
-        }
     }
 }
