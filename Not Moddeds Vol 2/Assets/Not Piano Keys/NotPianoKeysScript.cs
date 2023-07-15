@@ -13,7 +13,7 @@ public class NotPianoKeysScript : MonoBehaviour
     public KMAudio Audio;
     public KMBombModule Module;
     public KMSelectable[] buttons;
-    public TextMesh display;
+    public TextMesh[] displayChars;
     public Material WhiteKey;
 
     private PianoSymbol[] displayedSymbols = new PianoSymbol[3];
@@ -51,6 +51,7 @@ public class NotPianoKeysScript : MonoBehaviour
         GenerateBlackSequence();
         GenerateWhiteSequence();
         OrderSequences();
+        DisplaySymbols();
         DoLogging();
     }
 
@@ -126,10 +127,13 @@ public class NotPianoKeysScript : MonoBehaviour
         for (int i = 0; i < 12; i++)
             combinedSequence[i] = presses[order[i]];
     }
-
+    void DisplaySymbols()
+    {
+        for (int i = 0; i < 3; i++)
+            displayChars[i].text = displayedSymbols[i].symbol.ToString();
+    }
     void DoLogging()
     {
-        display.text = displayedSymbols.Select(x => x.symbol).Join("   ");
         Debug.LogFormat("[Not Piano Keys #{0}] The displayed symbols are: {1}.", moduleId, displayedSymbols.Select(x => x.name.ToString().Replace('_', ' ')).Join(", "));
         Debug.LogFormat("[Not Piano Keys #{0}] The black sequence is {1}.", moduleId, blackSequence.Select(x => x + 1).Join());
         Debug.LogFormat("[Not Piano Keys #{0}] The used 3×3 is #{1} in reading order. Use the {2} quadrant.", moduleId, chosen3x3 + 1, quadNames[displayedSymbols[0].GetValue()]);
@@ -161,17 +165,15 @@ public class NotPianoKeysScript : MonoBehaviour
     IEnumerator DisplayZero()
     {
         yield return new WaitForSeconds(0.8f);
-        StringBuilder newDisplay = new StringBuilder(display.text);
         for (int i = 0; i < 3; i++)
         {
-            newDisplay[4 * i] = '0';
-            display.text = newDisplay.ToString();
+            displayChars[i].text = "0";
             yield return new WaitForSeconds(1.6f);
         }
     }
 
 #pragma warning disable 414
-    private readonly string TwitchHelpMessage = @"Use !{0} press W1 B1 W3 K5 W7 to press those keys.";
+    private readonly string TwitchHelpMessage = @"Use !{0} press W1 B1 W3 B5 B7 to press those keys.";
 #pragma warning restore 414
     IEnumerator Press(KMSelectable btn, float wait)
     {
@@ -180,7 +182,7 @@ public class NotPianoKeysScript : MonoBehaviour
     }
     IEnumerator ProcessTwitchCommand(string command)
     {
-        command = command.Trim().ToUpperInvariant();
+        command = command.Trim().ToUpperInvariant().Replace('K', 'B');
         List<string> parameters = command.Split(new char[] { ' ', ',', ';' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         if (parameters.First() == "PRESS" && parameters.Skip(1).All(x => keyNames.Contains(x)))
         {
