@@ -199,7 +199,7 @@ public class NotProbingScript : MonoBehaviour
                 int[] allNums = m.Groups[1].Value.Where(x => !char.IsWhiteSpace(x)).Select(ch => ch - '1').ToArray();
                 if (allNums.Length % 2 != 0)
                 {
-                    yield return "sendtochaterror Cycle cannot be performed with an even number of arguments.";
+                    yield return "sendtochaterror Cycle cannot be performed with an odd number of arguments.";
                     yield break;
                 }
                 int[][] allPairs =
