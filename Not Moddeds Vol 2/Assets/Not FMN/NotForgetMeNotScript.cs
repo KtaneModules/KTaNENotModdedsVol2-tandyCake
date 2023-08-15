@@ -212,10 +212,11 @@ public class NotForgetMeNotScript : MonoBehaviour
     }
     int[] Swap(int[] array, int p1, int p2)
     {
-        int temp = array[p1];
-        array[p1] = array[p2];
-        array[p2] = temp;
-        return array;
+        var arr = array.ToArray();
+        int temp = arr[p1];
+        arr[p1] = arr[p2];
+        arr[p2] = temp;
+        return arr;
     }
     int GetPermuations(int[] field)
     {
@@ -261,6 +262,99 @@ public class NotForgetMeNotScript : MonoBehaviour
                 yield return new WaitForSeconds(0.05f);
             }
         }
+    }
 
+    struct QueueItem
+    {
+        public int[] Cells { get; private set; }
+        public int[] Parent { get; private set; }
+        public int Button { get; private set; }
+
+        public QueueItem(int[] cells, int[] parent, int button)
+        {
+            Cells = cells;
+            Parent = parent;
+            Button = button;
+        }
+    }
+
+    private IEnumerator TwitchHandleForcedSolve()
+    {
+        if (!inputting)
+        {
+            zeroButton.OnInteract();
+            yield return new WaitForSeconds(0.05f);
+        }
+        var visited = new Dictionary<int[], QueueItem>();
+        var q = new Queue<QueueItem>();
+        var goal = solution.ToArray();
+        q.Enqueue(new QueueItem(currentPuzzle, null, 0));
+        var list = new List<int[]>();
+        while (q.Count > 0)
+        {
+            var qi = q.Dequeue();
+            if (visited.Any(i => i.Key.SequenceEqual(qi.Cells)))
+                continue;
+            visited[qi.Cells] = qi;
+            Debug.Log(qi.Cells.Join(""));
+            if (qi.Cells.SequenceEqual(goal))
+                break;
+            yield return null;
+            int[] ixs = Enumerable.Range(0, 8).Select(i => Array.IndexOf(qi.Cells, i + 1)).ToArray();
+            int zeroPos = Array.IndexOf(qi.Cells, 0);
+            var cells = qi.Cells.ToArray();
+            if (GetAdjacents(3, 3, ixs[0]).Contains(zeroPos))
+            {
+                var swap = Swap(cells, ixs[0], zeroPos);
+                q.Enqueue(new QueueItem(swap, qi.Cells, 0));
+            }
+            if (GetAdjacents(3, 3, ixs[1]).Contains(zeroPos))
+            {
+                var swap = Swap(cells, ixs[1], zeroPos);
+                q.Enqueue(new QueueItem(swap, qi.Cells, 1));
+            }
+            if (GetAdjacents(3, 3, ixs[2]).Contains(zeroPos))
+            {
+                var swap = Swap(cells, ixs[2], zeroPos);
+                q.Enqueue(new QueueItem(swap, qi.Cells, 2));
+            }
+            if (GetAdjacents(3, 3, ixs[3]).Contains(zeroPos))
+            {
+                var swap = Swap(cells, ixs[3], zeroPos);
+                q.Enqueue(new QueueItem(swap, qi.Cells, 3));
+            }
+            if (GetAdjacents(3, 3, ixs[4]).Contains(zeroPos))
+            {
+                var swap = Swap(cells, ixs[4], zeroPos);
+                q.Enqueue(new QueueItem(swap, qi.Cells, 4));
+            }
+            if (GetAdjacents(3, 3, ixs[5]).Contains(zeroPos))
+            {
+                var swap = Swap(cells, ixs[5], zeroPos);
+                q.Enqueue(new QueueItem(swap, qi.Cells, 5));
+            }
+            if (GetAdjacents(3, 3, ixs[6]).Contains(zeroPos))
+            {
+                var swap = Swap(cells, ixs[6], zeroPos);
+                q.Enqueue(new QueueItem(swap, qi.Cells, 6));
+            }
+            if (GetAdjacents(3, 3, ixs[7]).Contains(zeroPos))
+            {
+                var swap = Swap(cells, ixs[7], zeroPos);
+                q.Enqueue(new QueueItem(swap, qi.Cells, 7));
+            }
+        }
+        var r = goal;
+        var path = new List<int>();
+        while (true)
+        {
+            var nr = visited[r];
+            if (nr.Parent == null)
+                break;
+            path.Add(nr.Button);
+            r = nr.Parent;
+        }
+        path.Reverse();
+        Debug.Log(path.Join(", "));
     }
 }
