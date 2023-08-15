@@ -266,11 +266,11 @@ public class NotForgetMeNotScript : MonoBehaviour
 
     struct QueueItem
     {
-        public int[] Cells { get; private set; }
-        public int[] Parent { get; private set; }
+        public string Cells { get; private set; }
+        public string Parent { get; private set; }
         public int Button { get; private set; }
 
-        public QueueItem(int[] cells, int[] parent, int button)
+        public QueueItem(string cells, string parent, int button)
         {
             Cells = cells;
             Parent = parent;
@@ -285,65 +285,31 @@ public class NotForgetMeNotScript : MonoBehaviour
             zeroButton.OnInteract();
             yield return new WaitForSeconds(0.05f);
         }
-        var visited = new Dictionary<int[], QueueItem>();
+        var goal = solution.Join("");
+
+        var visited = new Dictionary<string, QueueItem>();
         var q = new Queue<QueueItem>();
-        var goal = solution.ToArray();
-        q.Enqueue(new QueueItem(currentPuzzle, null, 0));
-        var list = new List<int[]>();
+        q.Enqueue(new QueueItem(currentPuzzle.Join(""), null, 0));
         while (q.Count > 0)
         {
             var qi = q.Dequeue();
-            if (visited.Any(i => i.Key.SequenceEqual(qi.Cells)))
+            if (visited.ContainsKey(qi.Cells))
                 continue;
             visited[qi.Cells] = qi;
-            Debug.Log(qi.Cells.Join(""));
-            if (qi.Cells.SequenceEqual(goal))
+            if (qi.Cells == goal)
                 break;
-            yield return null;
-            int[] ixs = Enumerable.Range(0, 8).Select(i => Array.IndexOf(qi.Cells, i + 1)).ToArray();
-            int zeroPos = Array.IndexOf(qi.Cells, 0);
-            var cells = qi.Cells.ToArray();
-            if (GetAdjacents(3, 3, ixs[0]).Contains(zeroPos))
+
+            int zeroPos = qi.Cells.IndexOf('0');
+            foreach (var adj in GetAdjacents(3, 3, zeroPos))
             {
-                var swap = Swap(cells, ixs[0], zeroPos);
-                q.Enqueue(new QueueItem(swap, qi.Cells, 0));
-            }
-            if (GetAdjacents(3, 3, ixs[1]).Contains(zeroPos))
-            {
-                var swap = Swap(cells, ixs[1], zeroPos);
-                q.Enqueue(new QueueItem(swap, qi.Cells, 1));
-            }
-            if (GetAdjacents(3, 3, ixs[2]).Contains(zeroPos))
-            {
-                var swap = Swap(cells, ixs[2], zeroPos);
-                q.Enqueue(new QueueItem(swap, qi.Cells, 2));
-            }
-            if (GetAdjacents(3, 3, ixs[3]).Contains(zeroPos))
-            {
-                var swap = Swap(cells, ixs[3], zeroPos);
-                q.Enqueue(new QueueItem(swap, qi.Cells, 3));
-            }
-            if (GetAdjacents(3, 3, ixs[4]).Contains(zeroPos))
-            {
-                var swap = Swap(cells, ixs[4], zeroPos);
-                q.Enqueue(new QueueItem(swap, qi.Cells, 4));
-            }
-            if (GetAdjacents(3, 3, ixs[5]).Contains(zeroPos))
-            {
-                var swap = Swap(cells, ixs[5], zeroPos);
-                q.Enqueue(new QueueItem(swap, qi.Cells, 5));
-            }
-            if (GetAdjacents(3, 3, ixs[6]).Contains(zeroPos))
-            {
-                var swap = Swap(cells, ixs[6], zeroPos);
-                q.Enqueue(new QueueItem(swap, qi.Cells, 6));
-            }
-            if (GetAdjacents(3, 3, ixs[7]).Contains(zeroPos))
-            {
-                var swap = Swap(cells, ixs[7], zeroPos);
-                q.Enqueue(new QueueItem(swap, qi.Cells, 7));
+                var ch = qi.Cells.ToCharArray();
+                var tmp = ch[zeroPos];
+                ch[zeroPos] = ch[adj];
+                ch[adj] = tmp;
+                q.Enqueue(new QueueItem(new string(ch), qi.Cells, ch[zeroPos] - '0'));
             }
         }
+
         var r = goal;
         var path = new List<int>();
         while (true)
@@ -354,7 +320,12 @@ public class NotForgetMeNotScript : MonoBehaviour
             path.Add(nr.Button);
             r = nr.Parent;
         }
-        path.Reverse();
-        Debug.Log(path.Join(", "));
+
+        for (int i = path.Count - 1; i >= 0; i--)
+        {
+            buttons[path[i] - 1].OnInteract();
+            yield return new WaitForSeconds(.05f);
+        }
+        zeroButton.OnInteract();
     }
 }
