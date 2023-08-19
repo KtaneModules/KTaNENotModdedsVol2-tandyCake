@@ -62,7 +62,7 @@ public class NotNumberPadScript : MonoBehaviour {
         {
             submit.color = (ButtonColor)Rnd.Range(0, 4);
             clear.color = (ButtonColor)Rnd.Range(0, 4);
-        } while (submit.color == ButtonColor.Green && submit.color == ButtonColor.Red);
+        } while (submit.color == ButtonColor.Green && clear.color == ButtonColor.Red);
         submit.UpdateAppearance();
         clear.UpdateAppearance();
         for (int i = 0; i < 10; i++)
