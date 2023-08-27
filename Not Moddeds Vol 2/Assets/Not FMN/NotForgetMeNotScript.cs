@@ -212,10 +212,11 @@ public class NotForgetMeNotScript : MonoBehaviour
     }
     int[] Swap(int[] array, int p1, int p2)
     {
-        int temp = array[p1];
-        array[p1] = array[p2];
-        array[p2] = temp;
-        return array;
+        var arr = array.ToArray();
+        int temp = arr[p1];
+        arr[p1] = arr[p2];
+        arr[p2] = temp;
+        return arr;
     }
     int GetPermuations(int[] field)
     {
@@ -261,6 +262,70 @@ public class NotForgetMeNotScript : MonoBehaviour
                 yield return new WaitForSeconds(0.05f);
             }
         }
+    }
 
+    struct QueueItem
+    {
+        public string Cells { get; private set; }
+        public string Parent { get; private set; }
+        public int Button { get; private set; }
+
+        public QueueItem(string cells, string parent, int button)
+        {
+            Cells = cells;
+            Parent = parent;
+            Button = button;
+        }
+    }
+
+    private IEnumerator TwitchHandleForcedSolve()
+    {
+        if (!inputting)
+        {
+            zeroButton.OnInteract();
+            yield return new WaitForSeconds(0.05f);
+        }
+        var goal = solution.Join("");
+
+        var visited = new Dictionary<string, QueueItem>();
+        var q = new Queue<QueueItem>();
+        q.Enqueue(new QueueItem(currentPuzzle.Join(""), null, 0));
+        while (q.Count > 0)
+        {
+            var qi = q.Dequeue();
+            if (visited.ContainsKey(qi.Cells))
+                continue;
+            visited[qi.Cells] = qi;
+            if (qi.Cells == goal)
+                break;
+
+            int zeroPos = qi.Cells.IndexOf('0');
+            foreach (var adj in GetAdjacents(3, 3, zeroPos))
+            {
+                var ch = qi.Cells.ToCharArray();
+                var tmp = ch[zeroPos];
+                ch[zeroPos] = ch[adj];
+                ch[adj] = tmp;
+                q.Enqueue(new QueueItem(new string(ch), qi.Cells, ch[zeroPos] - '0'));
+            }
+        }
+
+        var r = goal;
+        var path = new List<int>();
+        while (true)
+        {
+            var nr = visited[r];
+            if (nr.Parent == null)
+                break;
+            path.Add(nr.Button);
+            r = nr.Parent;
+        }
+
+        for (int i = path.Count - 1; i >= 0; i--)
+        {
+            buttons[path[i] - 1].OnInteract();
+            yield return new WaitForSeconds(.05f);
+        }
+        zeroButton.OnInteract();
     }
 }
